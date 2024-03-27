@@ -9,15 +9,17 @@ int odd(int nro) {
   return nro % 2 == 1;
 }
 
+void quedarmeCon(int numeros[],int (*unCriterio)(int)){
+  int* resultados;
+  int largoResultado;
+  largoResultado = filter(numeros, &resultados, unCriterio);
+  imprimirLista(resultados,largoResultado,"impares");
+  free(resultados);
+}
+
 int main() {
     int numeros[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    int* resultados;
-    int largoResultado;
-    largoResultado = filter(numeros, &resultados, &even);
-    imprimirLista(resultados,largoResultado, "pares");
-    free(resultados);
-    largoResultado = filter(numeros, &resultados, &odd);
-    imprimirLista(resultados,largoResultado,"impares");
-    free(resultados);
+    quedarmeCon(numeros,&even);
+    quedarmeCon(numeros,&odd);
     return 0;
 }
