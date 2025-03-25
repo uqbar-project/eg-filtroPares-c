@@ -2,12 +2,13 @@
 
 ## Primer solución - vectores
 
-Para la primer solución vamos a platear el archivo [pares.c](pares.c). Aquí podemos ver un main donde generamos dos vectores: 
+Para la primer solución vamos a plantear el archivo [pares.c](pares.c). Aquí podemos ver un main donde generamos dos vectores: 
 
 - **numeros[]** que modela la lista de números que deseamos filtrar.
 - **pares[]** que modela la lista de los números resultantes del filtrado. Inicialmente arrancamos con todos los valores en cero. 
 
 Luego delegamos el proceso de filtrado en la función `filtrarPares` que es de aridad 2 *(Conocemos por aridad al número de parámetros de entrada que acepta una función)*. 
+
 ```c
 void filtrarPares(int numeros[], int pares[]) {
     int j = 0;
@@ -36,69 +37,71 @@ Por lo tanto definimos a `pares` como un puntero `int*`. El mismo lo pasamos por
 
 ```c
 int filtrarPares(int numeros[], int** pares) {
-    int canitdadDePares = 0;
+    int cantidadDePares = 0;
     for (int i = 0; i < 10; i++) {
         if (numeros[i] % 2 == 0) {
-            canitdadDePares = canitdadDePares + 1;
-            if (canitdadDePares == 1) {
+            cantidadDePares = cantidadDePares + 1;
+            if (cantidadDePares == 1) {
               * pares = (int*)malloc(sizeof(int));
             }
             else{
-              * pares = (int *)realloc(*pares, sizeof(int)*canitdadDePares);
+              * pares = (int *)realloc(*pares, sizeof(int)*cantidadDePares);
             }
-            * (*pares + canitdadDePares -1)  = numeros[i];
+            * (*pares + cantidadDePares -1)  = numeros[i];
         }
     }
-    return canitdadDePares;
+    return cantidadDePares;
 }
 ```
-Pueden notar que como pasamos el puntero del vector resultante por referencia (es decir la dirección de la variable que tiene como valor el puntero), entocnes lo que vamos a manipular dentro de la funció nes un puntero a puntero. 
+Pueden notar que como pasamos el puntero del vector resultante por referencia (es decir la dirección de la variable que tiene como valor el puntero), entonces lo que vamos a manipular dentro de la función es un puntero a puntero. 
 
-La variable que determinaba el índice del vector resultante, ahora lo llamamos `canitdadDePares`, un nombre que representa mucho mejor qué es lo que estamos modelando, es decir, un nombre mucho más [expresivo](https://wiki.uqbar.org/wiki/articles/expresividad.html).
+La variable que determinaba el índice del vector resultante, ahora lo llamamos `cantidadDePares`, un nombre que representa mucho mejor qué es lo que estamos modelando, es decir, un nombre mucho más [expresivo](https://wiki.uqbar.org/wiki/articles/expresividad.html).
+
 Nuevamente contamos con el bucle for para recorrer el vector de origen, pero en este caso la aserción del `if` es más compleja: Tenemos que diferenciar si es la primera vez que vamos a agregar un número a la lista resultante o no. ¿Por qué? porque debemos 
 
 - Solicitar memoria dinámica por primera vez (malloc).
 - Agrandar el espacio YA solicitado (realloc).
 
-Tanto `malloc` como `realloc` necesitan que les pasemos el tamaño a solicitar. Por dicho motivo en el `malloc` vamos a pedir un tamaño de un entero (`sizeof(int)`) y en el caso de `realloc` pedimos la cantidad de resultados que disponemos por un entero (`sizeof(int)*canitdadDePares`).
+Tanto `malloc` como `realloc` necesitan que les pasemos el tamaño a solicitar. Por dicho motivo en el `malloc` vamos a pedir un tamaño de un entero (`sizeof(int)`) y en el caso de `realloc` pedimos la cantidad de resultados que disponemos por un entero (`sizeof(int)*cantidadDePares`).
 Luego asignamos el valor del número par en el contenido del puntero. Al finalizar el ciclo de recorrido, vamos a devolver el largo del vector resultante a fin de poder recorrerlo por fuera de la función. 
 
-## ¿Y Si ahora quiero los impares?
+## ¿Y si ahora quiero los impares?
+
 Mmmm... lo que tenemos que hacer es crear una nueva función para los impares. La lógica a desarrollar es la misma, por lo tanto *copiamos y pegamos* la definición de nuestra función y hacemos un cambio mínimo
 
 ```c
 int filtrarPares(int numeros[], int** pares) {
-    int canitdadDePares = 0;
+    int cantidadDePares = 0;
     for (int i = 0; i < 10; i++) {
         if (numeros[i] % 2 == 0) {
-            canitdadDePares = canitdadDePares + 1;
-            if (canitdadDePares == 1) {
+            cantidadDePares = cantidadDePares + 1;
+            if (cantidadDePares == 1) {
               * pares = (int*)malloc(sizeof(int));
             }
             else{
-              * pares = (int *)realloc(*pares, sizeof(int)*canitdadDePares);
+              * pares = (int *)realloc(*pares, sizeof(int)*cantidadDePares);
             }
-            * (*pares + canitdadDePares -1)  = numeros[i];
+            * (*pares + cantidadDePares -1)  = numeros[i];
         }
     }
-    return canitdadDePares;
+    return cantidadDePares;
 }
 
-int filtrarImares(int numeros[], int** pares) {
-    int canitdadDeImpares = 0;
+int filtrarImpares(int numeros[], int** pares) {
+    int cantidadDeImpares = 0;
     for (int i = 0; i < 10; i++) {
         if (numeros[i] % 2 == 1) {
-            canitdadDeImpares = canitdadDeImpares + 1;
-            if (canitdadDeImpares == 1) {
+            cantidadDeImpares = cantidadDeImpares + 1;
+            if (cantidadDeImpares == 1) {
               * pares = (int*)malloc(sizeof(int));
             }
             else{
-              * pares = (int *)realloc(*pares, sizeof(int)*canitdadDeImpares);
+              * pares = (int *)realloc(*pares, sizeof(int)*cantidadDeImpares);
             }
-            * (*pares + canitdadDeImpares -1)  = numeros[i];
+            * (*pares + cantidadDeImpares -1)  = numeros[i];
         }
     }
-    return canitdadDeImpares;
+    return cantidadDeImpares;
 }
 ```
 
@@ -126,7 +129,7 @@ int filter(int numeros[], int** lista, int (*unCriterio)(int)) {
     return cantidadDeElementosFiltrados;
 }
 ```
-Por cuestiones de expresividad `cantidadDePares` o `cantidadDeImpares` es llamado `cantidadDeElementosFiltrados` ya que no sabemos el criterio que podría recibir. El criterio no es de cualquier tipo: *recibe un entero y devuelve un entero* (0 o 1 ya que no tenemos un tipo bool por defecto. Podríamos incroporar una biblioteca para tener dicha abstracción pero queda fuera del scope de este ejemplo). Esto lo logramos con un **puntero a función** que nos va a permitir pasar la posición de memoria donde se encuentra una función para invocarla dentro de `filter`.
+Por cuestiones de expresividad `cantidadDePares` o `cantidadDeImpares` es llamado `cantidadDeElementosFiltrados` ya que no sabemos el criterio que podría recibir. El criterio no es de cualquier tipo: *recibe un entero y devuelve un entero* (0 o 1 ya que no tenemos un tipo bool por defecto. Podríamos incorporar una biblioteca para tener dicha abstracción pero queda fuera del scope de este ejemplo). Esto lo logramos con un **puntero a función** que nos va a permitir pasar la posición de memoria donde se encuentra una función para invocarla dentro de `filter`.
 
 Entonces ahora contamos con dos funciones muy pequeñas para pasar al filter como parámetro. En ambos casos cumplen con la interfaz propuesta por filter que es de recibir un entero y devolver un enetero:
 ```c
